@@ -6,7 +6,7 @@
 # Default target (everything)
 #
 
-all: dist/public $(ALL_ARTIFACTS)
+all: dist/public dist/node_modules $(ALL_ARTIFACTS)
 
 
 #

@@ -9,8 +9,7 @@ REMOTE_SERVICE := example.com
 
 include webawesome/vars.mk
 
-ALL_ARTIFACTS := 	dist/node_modules \
-					dist/server.js \
+ALL_ARTIFACTS := 	dist/server.js \
 					dist/public/index.html.gz \
 					$(ALL_JS:.js=.min.js).gz \
 					$(ALL_CSS:.css=.min.css).gz \
