@@ -119,21 +119,20 @@ $(ALL_CSS:.css=.min.css): $(ALL_CSS)
 # Utilities / Misc
 #
 
-remote: all remote-restart
+remote: all
 	rsync -avz -e ssh dist/* $(SSH_CONN):$(REMOTE_PATH)
 
 
 remote-restart:
-	ssh $(SSH_CONN) sudo restart $(REMOTE_SERVICE)
-
-
+	ssh $(SSH_CONN) "sudo restart $(REMOTE_SERVICE)"
+	ssh $(SSH_CONN) "sudo service nginx reload"
 
 ssh:
 	ssh -L5858:localhost:5858 -L1337:localhost:1337 -L8080:localhost:8080 $(SSH_CONN)
 
 clean:
 	rm -rf dist
- 
+
 
 #
 # Voodoo
