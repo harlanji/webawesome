@@ -34,6 +34,9 @@ dist/node_modules: dist node_modules
 	cp -R node_modules $@
 
 
+dist/public/scripts:
+	mkdir -p $@
+
 
 #
 # TypeScript -> JS
@@ -43,12 +46,20 @@ dist/node_modules: dist node_modules
 dist/server.js: d.ts src/common/*.ts src/server/*.ts
 	tsc --module commonjs --out $@ src/common/*.ts src/server/*.ts
 
-dist/public/scripts/client.js: d.ts src/common/*.ts src/client/*.ts
+dist/public/scripts/client.js: d.ts dist/public/scripts src/common/*.ts src/client/*.ts
 	tsc --module amd -sourcemap --out $@ src/common/*.ts src/client/*.ts
 
 
 
+#
+# Handlebars templates -> JS
+#
 
+dist/public/scripts/hbs.js: dist/public/scripts src/client/hbs/*.hbs
+	# http://stackoverflow.com/questions/12409504/how-can-i-consume-handlebars-command-line-generated-templates-with-ember
+	touch $@
+	handlebars src/client/hbs/*.hbs -f $@ -k each -k if -k unless
+	
 
 
 #
@@ -56,8 +67,8 @@ dist/public/scripts/client.js: d.ts src/common/*.ts src/client/*.ts
 #
 
 
-$(ALL_JS): dist/public/scripts/client.js $(JS_DEPS)
-	cat $(JS_DEPS) $< > $@
+$(ALL_JS): $(JS_DEPS) dist/public/scripts/hbs.js dist/public/scripts/client.js
+	cat $+ > $@
 
 $(ALL_JS).map: $(ALL_JS) dist/public/scripts/client.js.map
 	touch $@
