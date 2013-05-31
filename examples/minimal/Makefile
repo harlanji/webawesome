@@ -24,9 +24,6 @@ CSS_DEPS := 	dist/public/css/thirdparty.css \
 
 TSD_LIBS := 	node \
 				express \
-				connect \
-				jquery \
-				ember \
 				#
 
 
