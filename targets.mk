@@ -67,7 +67,7 @@ dist/public/scripts/hbs.js: dist/public/scripts src/client/hbs/*.hbs
 #
 
 
-$(ALL_JS): $(JS_DEPS) dist/public/scripts/hbs.js dist/public/scripts/client.js
+$(ALL_JS): $(JS_DEPS)
 	cat $+ > $@
 
 $(ALL_JS).map: $(ALL_JS) dist/public/scripts/client.js.map
