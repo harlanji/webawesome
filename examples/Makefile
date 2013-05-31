@@ -9,24 +9,17 @@ REMOTE_SERVICE := example.com
 
 include webawesome/vars.mk
 
-ALL_ARTIFACTS := 	dist/server.js \
-					dist/public/index.html.gz \
+ALL_ARTIFACTS := 	dist/public/index.html.gz \
 					$(ALL_JS:.js=.min.js).gz \
 					$(ALL_CSS:.css=.min.css).gz \
+					$(GENERATED_JS) \
 					# $(ALL_JS:.js=.min.js).map \
 					#
 
-JS_DEPS := 	dist/public/js/libs/jquery-1.9.1.js \
-			dist/public/js/libs/handlebars-1.0.0-rc.3.js \
-			dist/public/js/libs/bootstrap.js \
-			dist/public/js/libs/ember-latest.js \
-			dist/public/js/libs/ember-data-latest.js \
-			dist/public/js/libs/require.js \
+JS_DEPS := 	dist/public/js/libs/thirdparty.js \
 			#
 
-CSS_DEPS := 	dist/public/css/normalize.css \
-				dist/public/css/bootstrap.css \
-				dist/public/css/bootstrap-responsive.css \
+CSS_DEPS := 	dist/public/css/thirdparty.css \
 				#
 
 TSD_LIBS := 	node \
@@ -34,7 +27,6 @@ TSD_LIBS := 	node \
 				connect \
 				jquery \
 				ember \
-				nodemailer \
 				#
 
 
