@@ -6,7 +6,7 @@
 # Default target (everything)
 #
 
-all: dist/public dist/node_modules $(ALL_ARTIFACTS)
+all: dist/public dist/node_modules $(SERVER_JS) $(ALL_ARTIFACTS)
 
 
 #
@@ -43,10 +43,10 @@ dist/public/scripts:
 #
 
 # FIXME separate into server Makefile.
-dist/server.js: d.ts src/common/*.ts src/server/*.ts
+$(SERVER_JS): d.ts src/common/*.ts src/server/*.ts
 	tsc --module commonjs --out $@ src/common/*.ts src/server/*.ts
 
-dist/public/scripts/client.js: d.ts dist/public/scripts src/common/*.ts src/client/*.ts
+$(CLIENT_JS): d.ts dist/public/scripts src/common/*.ts src/client/*.ts
 	tsc --module amd -sourcemap --out $@ src/common/*.ts src/client/*.ts
 
 
@@ -55,7 +55,7 @@ dist/public/scripts/client.js: d.ts dist/public/scripts src/common/*.ts src/clie
 # Handlebars templates -> JS
 #
 
-dist/public/scripts/hbs.js: dist/public/scripts src/client/hbs/*.hbs
+$(HBS_JS): dist/public/scripts src/client/hbs/*.hbs
 	# http://stackoverflow.com/questions/12409504/how-can-i-consume-handlebars-command-line-generated-templates-with-ember
 	touch $@
 	handlebars src/client/hbs/*.hbs -f $@ -k each -k if -k unless
@@ -70,7 +70,7 @@ dist/public/scripts/hbs.js: dist/public/scripts src/client/hbs/*.hbs
 $(ALL_JS): $(JS_DEPS)
 	cat $+ > $@
 
-$(ALL_JS).map: $(ALL_JS) dist/public/scripts/client.js.map
+$(ALL_JS).map: $(ALL_JS) $(CLIENT_JS:.js=.js.map)
 	touch $@
 	# FIXME translate source maps.. this is clearly wrong!
 	#cat $(JS_DEPS:.js=.js.map) $< > $@
@@ -80,8 +80,8 @@ $(ALL_JS).map: $(ALL_JS) dist/public/scripts/client.js.map
 #
 # Uglify JS and Source Maps
 #
-$(ALL_JS:.js=.min.js): $(ALL_JS) $(ALL_JS).map
-	uglifyjs $< -o $@ -mc --source-map $@.map # --in-source-map $(ALL_JS).map
+$(ALL_JS:.js=.min.js): $(ALL_JS) $(ALL_JS:.js=.js.map)
+	uglifyjs $< -o $@ -mc --source-map $@.map # --in-source-map $(ALL_JS:.js=.js.map)
 
 $(ALL_JS:.js=.min.js).map: $(ALL_JS:.js=.min.js)
 	# this is handled by uglifyjs
