@@ -60,7 +60,7 @@ $(CLIENT_JS:.js=.js.map): $(CLIENT_JS)
 $(HBS_JS): dist/public/scripts src/client/hbs/*.hbs
 	# http://stackoverflow.com/questions/12409504/how-can-i-consume-handlebars-command-line-generated-templates-with-ember
 	touch $@
-	handlebars src/client/hbs/*.hbs -f $@ -k each -k if -k unless
+	$(HANDLEBARS_BIN) src/client/hbs/*.hbs -f $@ -k each -k if -k unless
 	
 
 

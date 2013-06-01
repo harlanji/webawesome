@@ -2,6 +2,14 @@
 # Harlan Iverson
 
 
+
+#
+# Bin
+#
+
+HANDLEBARS_BIN := handlebars
+
+
 #
 # Vars
 #
